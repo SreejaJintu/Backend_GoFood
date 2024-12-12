@@ -18,7 +18,9 @@ app.use(
     origin:  ['http://localhost:3000', 'https://gofood-gz2h1nq3t-sreeja-sreenivasans-projects.vercel.app'], 
     credentials: true,
     methods: ['GET', 'POST'], 
-    allowedHeaders: ['Content-Type'],
+    allowedHeaders: ['Content-Type','Authorization'],
+    allowedHeaders: '*',
+
   })
 );
 app.use(express.json());

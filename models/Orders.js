@@ -18,6 +18,6 @@ const orderSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now },
 });
 
-const orderModel = mongoose.models.orders || mongoose.model("orders", orderSchema);
+const orderModel = mongoose.models.orders|| mongoose.model("orders", orderSchema);
 
-export { orderModel };
+export  {orderModel};

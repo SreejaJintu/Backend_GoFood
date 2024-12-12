@@ -7,7 +7,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
   apiVersion: '2022-11-15', 
 });
 
-export const paymentdata = async (req, res) => {
+const paymentdata = async (req, res) => {
   const { amount } = req.body;
   try {
     const paymentIntent = await stripe.paymentIntents.create({
@@ -20,3 +20,5 @@ export const paymentdata = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+export default paymentdata;
+

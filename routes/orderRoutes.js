@@ -1,10 +1,10 @@
 import express from 'express';
-import { getOrders, getUserOrders} from '../controllers/orderController.js'
-import authenticate from '../middlewares/userAuth.js';
+import { createOrder, getUserOrders} from '../controllers/orderController.js'
+import { authenticateToken } from "../middlewares/authMiddleware.js"; 
 const orderRouter = express.Router();
 
-orderRouter.post('/orders',authenticate,getOrders)
-orderRouter.get('/my-orders', authenticate, getUserOrders); 
+orderRouter.post('/create', authenticateToken, createOrder);
+orderRouter.get('/my-orders', authenticateToken, getUserOrders); 
 
 
 export default orderRouter;

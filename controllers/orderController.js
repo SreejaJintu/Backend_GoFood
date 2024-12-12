@@ -1,37 +1,45 @@
-import { orderModel } from "../models/Orders.js";
+import {orderModel} from '../models/Orders.js';
 import Stripe from "stripe"
 
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
 
-const getOrders= async (req, res) => {
-
+const createOrder = async (req, res) => {
   console.log('Request Body:', req.body);
 
-    const { items, totalAmount } = req.body;
-    const userId = req.user.userId; // Extracted from the JWT middleware
+  const { userId, items, totalAmount } = req.body;
 
-    if (!items || items.length === 0) {
-      return res.status(400).json({ message: 'Order items cannot be empty' });
-    }
-  
-    try {
-      const order = new orderModel({
-        userId,
-        items,
-        totalAmount,
-      });
-  
-      const savedOrder = await order.save();
-      res.status(201).json(savedOrder);
-    } catch (error) {
-      res.status(500).json({ message: 'Failed to create order', error });
-    }
-  };
-  export { getOrders };
+  // Validate the request data
+  if (!userId || !items || totalAmount == null) {
+    return res.status(400).json({ error: "Invalid order data" });
+  }
+
+  try {
+    // Create a new order using the Mongoose model
+    const order = new orderModel({
+      userId,// Assuming this contains the user's ID or relevant user data
+      items,          // Array of items
+      totalAmount,    // Total amount of the order
+      date: new Date(), // Order creation date
+      status: 'Pending',
+
+    });
+
+    // Save the order to the database
+    const savedOrder = await order.save();
+
+    res.status(201).json(savedOrder);
+  } catch (error) {
+    console.error('Error creating order:', error);
+    res.status(500).json({ message: 'Failed to create order', error });
+  }
+};
+
+export { createOrder };
+
   export const getUserOrders = async (req, res) => {
     try {
-      const userId = req.user.userId; // Extract user ID from the authenticated request
+      const userId = req.user.userId; 
       const orders = await orderModel.find({ userId }).sort({ createdAt: -1 }); // Get user's orders sorted by latest
       res.status(200).json({ success: true, orders });
     } catch (error) {

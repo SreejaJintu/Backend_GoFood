@@ -17,12 +17,12 @@ const loginUser = async (req, res) => {
       if (!comparePwd) {
           return res.status(401).json({ success: false, message: "Invalid password" });
       }
-
       const authToken = jwt.sign(
         { userId: user._id, role: user.role },
-        process.env.JWT_token,  
-        { expiresIn: '1d' }     
-    );
+        process.env.JWT_TOKEN,
+        { expiresIn: "1d" }
+      );
+      
     
       return res.status(200).json({ success: true, message: "Login successful", token: authToken });
   } catch (error) {
