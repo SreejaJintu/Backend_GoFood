@@ -52,7 +52,9 @@ const registerUser = async (req, res) => {
     res.status(201).json({
       success: true,
       message: 'User registered successfully!',
-      token: authToken, 
+      token: authToken,   
+      userId: user._id, 
+
     });
   } catch (error) {
     console.error('Error creating user:', error);

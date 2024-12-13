@@ -13,19 +13,20 @@ const createOrder = async (req, res) => {
   if (!userId || !items || totalAmount == null) {
     return res.status(400).json({ error: "Invalid order data" });
   }
+  if (!mongoose.Types.ObjectId.isValid(userId)) {
+    return res.status(400).json({ error: 'Invalid or missing userId' });
+  }
 
   try {
-    // Create a new order using the Mongoose model
     const order = new orderModel({
-      userId,// Assuming this contains the user's ID or relevant user data
-      items,          // Array of items
-      totalAmount,    // Total amount of the order
-      date: new Date(), // Order creation date
+      userId,
+      items,         
+      totalAmount,    
+      date: new Date(), 
       status: 'Pending',
 
     });
 
-    // Save the order to the database
     const savedOrder = await order.save();
 
     res.status(201).json(savedOrder);
