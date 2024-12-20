@@ -3,7 +3,6 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-
 const connectDB = async () => {
   try {
     await mongoose.connect(process.env.MONGO_URI, {
@@ -12,12 +11,21 @@ const connectDB = async () => {
     });
     console.log('MongoDB connected successfully');
 
-    const fetched_Data = await mongoose.connection.db.collection("foods");
-    const data = await fetched_Data.find({}).toArray(); 
-    global.food_items = data; 
+    // Fetch food data
+    const fetchedFoodData = await mongoose.connection.db.collection("foods");
+    const foodData = await fetchedFoodData.find({}).toArray(); 
+    global.food_items = foodData; 
+
+    // Fetch orders data
+    const fetchedOrdersData = await mongoose.connection.db.collection("orders");
+    const ordersData = await fetchedOrdersData.find({}).toArray();
+    global.orders = ordersData; // Store orders globally
+
+    console.log('Food items and Orders data loaded successfully');
   } catch (err) {
     console.error('Error connecting to MongoDB:', err.message);
     process.exit(1); 
   }
 };
-export default connectDB
+
+export default connectDB;

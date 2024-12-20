@@ -5,6 +5,8 @@ import cors from 'cors';
 import foodRoutes from './routes/foodRoutes.js';
 import orderRouter from './routes/orderRoutes.js';
 import paymentRouter from './routes/paymentRoutes.js';
+import adminRoutes from './routes/adminRoutes.js';
+
 import { WebSocketServer } from 'ws';
 import { createServer } from 'http'; // Import for HTTP server
 
@@ -19,10 +21,10 @@ app.use(
   cors({
     origin: [
       'http://localhost:3000',
-      'https://gofood-gz2h1nq3t-sreeja-sreenivasans-projects.vercel.app',
+      process.env.FRONTEND_URL,
     ],
     credentials: true,
-    methods: ['GET', 'POST'],
+    methods: ['GET', 'POST','PUT'],
     allowedHeaders: ['Content-Type', 'Authorization'],
   })
 );
@@ -52,6 +54,7 @@ const startServer = async () => {
   app.use('/user', userRoutes);
   app.use('/order', orderRouter);
   app.use('/payment', paymentRouter);
+  app.use('/admin', adminRoutes);
 
   const PORT = process.env.PORT || 5000;
   server.listen(PORT, () => {
