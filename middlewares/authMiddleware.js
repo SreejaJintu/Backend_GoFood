@@ -11,10 +11,10 @@
     }
   
     try {
-      const decoded = jwt.verify(token, process.env.JWT_TOKEN); // Use your JWT secret key
+      const decoded = jwt.verify(token, process.env.JWT_token); 
       console.log("Decoded Token:", decoded);
-      req.user = decoded; // Attach decoded user info to `req`
-      next(); // Proceed to the next middleware or route handler
+      req.user = decoded; 
+      next(); 
     } catch (error) {
       console.error("Token Verification Error:", error.message);
       res.status(403).json({ message: "Invalid token." });
