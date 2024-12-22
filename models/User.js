@@ -4,16 +4,15 @@ const userSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      required: true,
+      required: true
     },
     password: {
       type: String,
-      required: true,
+      required: true
     },
     email: {
       type: String,
-      required: true,
-      unique: true,
+      required: true
     },
     cartData: {
       type: Object,
@@ -22,8 +21,7 @@ const userSchema = new mongoose.Schema(
     role: {
       type: String,
       enum: ["admin", "user"],
-      default: "user",
-    },
+      default: "user"    },
   },
   {
     timestamps: true,

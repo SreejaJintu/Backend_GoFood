@@ -20,7 +20,7 @@ app.get('/', (req, res) => {
 app.use(
   cors({
     origin: [
-      'http://localhost:3000',
+      'http://localhost:3000','https://gofoodapp-2.onrender.com',
       process.env.FRONTEND_URL,
     ],
     credentials: true,

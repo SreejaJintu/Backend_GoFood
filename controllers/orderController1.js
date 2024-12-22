@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 import {orderModel} from '../models/Orders.js';
 
 dotenv.config();
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY); // Replace with your secret key
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 const createOrder = async (req, res) => {
   console.log("Request Body:", req.body);
@@ -45,7 +45,7 @@ const createOrder = async (req, res) => {
 export { createOrder };
 export const getUserOrders = async (req, res) => {
   try {
-    const userId = req.user.userId; 
+  const { userId, items, totalAmount } = req.body;
     const orders = await orderModel.find({ userId }).sort({ createdAt: -1 }); 
     res.status(200).json({ success: true, orders });
   } catch (error) {
