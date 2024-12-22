@@ -24,11 +24,16 @@ app.use(
       process.env.FRONTEND_URL,
     ],
     credentials: true,
+    origin: '*',
     methods: ['GET', 'POST','PUT'],
     allowedHeaders: ['Content-Type', 'Authorization'],
   })
 );
 app.use(express.json());
+app.use((req, res, next) => {
+  console.log('Incoming request:', req.method, req.url);
+  next();
+});
 
 // Initialize HTTP server
 const server = createServer(app); // Create a standalone HTTP server
