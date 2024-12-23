@@ -45,7 +45,7 @@ const createOrder = async (req, res) => {
 export { createOrder };
 export const getUserOrders = async (req, res) => {
   try {
-  const { userId, items, totalAmount } = req.body;
+    const { userId } = req.body;
     const orders = await orderModel.find({ userId }).sort({ createdAt: -1 }); 
     res.status(200).json({ success: true, orders });
   } catch (error) {
