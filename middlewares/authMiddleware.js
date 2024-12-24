@@ -30,7 +30,7 @@
     if (!token) return res.status(401).json({ message: "Access token required" });
   
     try {
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      const decoded = jwt.verify(token, process.env.JWT_token);
       req.user = decoded; // Attach the decoded token payload to the request
       next();
     } catch (err) {
