@@ -45,11 +45,19 @@ const createOrder = async (req, res) => {
 export { createOrder };
 export const getUserOrders = async (req, res) => {
   try {
-    const { userId } = req.body;
-    const orders = await orderModel.find({ userId }).sort({ createdAt: -1 }); 
+    // Assuming `authenticateToken` middleware sets `req.user` to the decoded token
+    const userId = req.user.id;
+
+    if (!userId) {
+      return res.status(400).json({ success: false, message: "User ID is required" });
+    }
+
+    const orders = await orderModel.find({ userId }).sort({ createdAt: -1 });
+
     res.status(200).json({ success: true, orders });
   } catch (error) {
     console.error("Error fetching orders:", error);
     res.status(500).json({ success: false, message: "Failed to fetch orders" });
   }
 };
+
