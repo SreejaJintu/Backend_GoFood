@@ -15,7 +15,6 @@ const createOrder = async (req, res) => {
   }
 
   try {
-    // Step 1: Create the order in your database
     const order = new orderModel({
       userId,
       items,
@@ -25,10 +24,9 @@ const createOrder = async (req, res) => {
     });
     const savedOrder = await order.save();
 
-    // Step 2: Create a PaymentIntent with Stripe
     const paymentIntent = await stripe.paymentIntents.create({
-      amount:  Number(totalAmount).toFixed(2) * 100,  // Stripe expects the amount in cents
-      currency: "usd", // Change to your preferred currency
+      amount:  Number(totalAmount).toFixed(2) * 100,  
+      currency: "usd", 
       metadata: { orderId: savedOrder._id.toString() },
     });
 
