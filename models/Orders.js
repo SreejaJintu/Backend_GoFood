@@ -17,6 +17,7 @@ const orderSchema = new mongoose.Schema({
   status: { type: String, default: 'Pending' }, 
   createdAt: { type: Date, default: Date.now },
 });
+orderSchema.index({ userId: 1 });
 
 const orderModel = mongoose.models.orders|| mongoose.model("orders", orderSchema);
 

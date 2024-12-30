@@ -7,6 +7,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 const createOrder = async (req, res) => {
   console.log("Request Body:", req.body);
+  console.log('Authenticated User:', req.user);
 
   const { userId, items, totalAmount } = req.body;
 
@@ -34,6 +35,7 @@ const createOrder = async (req, res) => {
       success: true,
       clientSecret: paymentIntent.client_secret,
       orderId: savedOrder._id,
+      userId
     });
   } catch (error) {
     console.error("Error creating order:", error);
@@ -43,12 +45,17 @@ const createOrder = async (req, res) => {
 export { createOrder };
 export const getUserOrders = async (req, res) => {
   try {
-    // Assuming `authenticateToken` middleware sets `req.user` to the decoded token
-    const userId = req.user.id;
+
+    console.log('Authenticated User:', req.user);
+    const userId = req.user.userId;
 
     if (!userId) {
       return res.status(400).json({ success: false, message: "User ID is required" });
     }
+    // if (!req.user || !req.user.id) {
+    //   return res.status(400).json({ success: false, message: "User not authenticated" });
+    // }
+    
 
     const orders = await orderModel.find({ userId }).sort({ createdAt: -1 });
 
