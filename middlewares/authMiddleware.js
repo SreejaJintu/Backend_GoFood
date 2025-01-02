@@ -1,5 +1,6 @@
   
   import jwt from "jsonwebtoken";
+  import { userModel } from "../models/User.js";
 
   export const authenticateToken = (req, res, next) => {
     const authHeader = req.headers.authorization;
@@ -24,21 +25,28 @@
       res.status(403).json({ message: "Invalid token." });
     }
   };
-  
-  // import jwt from "jsonwebtoken";
 
-  // export const authenticateToken = (req, res, next) => {
-  //   const authHeader = req.headers.authorization;
-  //   const token = authHeader && authHeader.split(" ")[1];
+
+  export const verifyAdmin = async (req, res, next) => {
+    try {
+      const token = req.header('Authorization').replace('Bearer ', '');
+      if (!token) {
+        return res.status(401).json({ error: 'No token provided.' });
+      }
   
-  //   if (!token) return res.status(401).json({ message: "Access token required" });
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      const user = await userModel.findById(decoded.id);
   
-  //   try {
-  //     const decoded = jwt.verify(token, process.env.JWT_token);
-  //     req.user = decoded; // Attach the decoded token payload to the request
-  //     next();
-  //   } catch (err) {
-  //     return res.status(403).json({ message: "Invalid or expired token" });
-  //   }
-  // };
+      if (!user || user.role !== 'admin') {
+        return res.status(403).json({ error: 'Access denied. Admins only.' });
+      }
+  
+      req.user = user; // Add user information to the request object
+      next();
+    } catch (error) {
+      console.error('Auth error:', error);
+      res.status(401).json({ error: 'Unauthorized.' });
+    }
+  };
+  
   

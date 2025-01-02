@@ -33,7 +33,7 @@ const loginUser = async (req, res) => {
          message: "Login successful", 
          token: authToken, 
          userId: user._id,
-         role: user.role, // Send role in response 
+         role: user.role, 
       });
   } catch (error) {
       console.error(error);
