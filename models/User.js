@@ -18,17 +18,23 @@ const userSchema = new mongoose.Schema(
       type: Object,
       default: {},
     },
+    shippingAddress: {
+      addressLine1: { type: String},
+      city: { type: String },
+      zipCode: { type: String },
+    },
     role: {
       type: String,
       enum: ["admin", "user"],
-      default: "user"    },
+      default: "user"
+    },
   },
   {
     timestamps: true,
-    minimize: false, 
+    minimize: false,
   }
 );
 
 const userModel = mongoose.models.users || mongoose.model("users", userSchema);
 
-export  { userModel };
+export { userModel };

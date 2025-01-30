@@ -2,14 +2,15 @@ import mongoose from "mongoose";
 import {foodModel} from "../models/Food.js";
 import fs from 'fs'
 
+
 const addFood=async(req,res)=>{
 
-     let filename=`${req.file.filename}`
+    console.log("Request body:", req.body);
 
     const newFood= new foodModel({
         name:req.body.name,
         description:req.body.description,
-        image:filename,
+        image: req.file ? req.file.filename : null, 
         price:req.body.price,
         category:req.body.category
  
@@ -18,8 +19,11 @@ const addFood=async(req,res)=>{
     try {
        
       await  newFood.save()
-      res.json({success:true,message:"food added"})
-
+      res.json({
+        success: true,
+        message: "Food added successfully",
+        foodItem: newFood, 
+      });
     } catch (error) {
         console.log(error)
         res.json({success:false,message:"error in addind food"})
@@ -42,20 +46,23 @@ res.json({success:false,message:error})
 }
 
 const removeFood = async (req, res) => {
-    try {
-        const name = req.body.name;
-        const deletedFood = await foodModel.findOneAndDelete({ name: name });
+  try {
+    console.log("Delete request received for ID:", req.params.id); // Log the ID
 
-        if (!deletedFood) {
-            return res.status(404).json({ success: false, message: "Food item not found" });
-        }
+    const { id } = req.params; 
+    const deletedFood = await foodModel.findByIdAndDelete(id); 
 
-        res.json({ success: true, message: "Food item deleted successfully" });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ success: false, message: "Error deleting food item" });
+    if (!deletedFood) {
+      return res.status(404).json({ success: false, message: "Food item not found" });
     }
+
+    res.json({ success: true, message: 'Food item deleted successfully', deletedFood });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: "Error deleting food item" });
+  }
 };
+
 
 
 

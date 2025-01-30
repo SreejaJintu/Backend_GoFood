@@ -26,27 +26,45 @@
     }
   };
 
+  // export const authenticateToken = (req, res, next) => {
+  //   const authHeader = req.headers.authorization;
+  //   const token = authHeader?.split(" ")[1];
+  
+  //   if (!token) {
+  //     return res.status(401).json({ message: "Access denied. No token provided." });
+  //   }
+  
+  //   try {
+  //     const decoded = jwt.verify(token, process.env.JWT_token);
+  //     req.user = decoded; 
+  //     next();
+  //   } catch (error) {
+  //     console.error("Token Verification Error:", error.message);
+  //     res.status(401).json({ message: "Invalid token." });
+  //   }
+  // };
+  
 
-  export const verifyAdmin = async (req, res, next) => {
-    try {
-      const token = req.header('Authorization').replace('Bearer ', '');
-      if (!token) {
-        return res.status(401).json({ error: 'No token provided.' });
-      }
+  // export const verifyAdmin = async (req, res, next) => {
+  //   try {
+  //     const token = req.header('Authorization').replace('Bearer ', '');
+  //     if (!token) {
+  //       return res.status(401).json({ error: 'No token provided.' });
+  //     }
   
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      const user = await userModel.findById(decoded.id);
+  //     const decoded = jwt.verify(token, process.env.JWT_SECRET);
+  //     const user = await userModel.findById(decoded.id);
   
-      if (!user || user.role !== 'admin') {
-        return res.status(403).json({ error: 'Access denied. Admins only.' });
-      }
+  //     if (!user || user.role !== 'admin') {
+  //       return res.status(403).json({ error: 'Access denied. Admins only.' });
+  //     }
   
-      req.user = user; // Add user information to the request object
-      next();
-    } catch (error) {
-      console.error('Auth error:', error);
-      res.status(401).json({ error: 'Unauthorized.' });
-    }
-  };
+  //     req.user = user; // Add user information to the request object
+  //     next();
+  //   } catch (error) {
+  //     console.error('Auth error:', error);
+  //     res.status(401).json({ error: 'Unauthorized.' });
+  //   }
+  // };
   
   
