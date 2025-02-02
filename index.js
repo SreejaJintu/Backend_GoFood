@@ -28,6 +28,7 @@ app.use(
     origin: [
       "http://localhost:3000",
       "https://gofoodapp-2.onrender.com",
+      "https://go-food-app-three.vercel.app/",
       process.env.FRONTEND_URL,
     ],
     credentials: true,
