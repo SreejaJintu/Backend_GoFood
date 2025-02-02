@@ -20,7 +20,7 @@ const server = createServer(app);
 const wss = new WebSocketServer({ server });
 
 // Serve static files for React frontend
-app.use(express.static(path.join(__dirname, "frontend/build")));
+app.use(express.static(path.join(__dirname, '../frontend/build')));
 
 // Middleware
 app.use(
@@ -65,8 +65,8 @@ wss.on("connection", (ws) => {
 });
 
 // Catch-all route for React frontend
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "frontend/build", "index.html"));
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../frontend/build/index.html'));
 });
 
 // Start the server
