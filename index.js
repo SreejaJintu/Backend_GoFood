@@ -28,7 +28,7 @@ app.use(
     origin: [
       "http://localhost:3000",
       "https://gofoodapp-2.onrender.com",
-      "https://go-food-app-three.vercel.app/",
+      "https://go-food-app-three.vercel.app",
       process.env.FRONTEND_URL,
     ],
     credentials: true,
@@ -66,7 +66,7 @@ wss.on("connection", (ws) => {
 
 // Catch-all route for React frontend
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../frontend/build/index.html'));
+  res.sendFile(path.resolve(__dirname, '../frontend/build', 'index.html'));
 });
 
 // Start the server
