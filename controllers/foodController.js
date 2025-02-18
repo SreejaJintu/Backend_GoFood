@@ -5,17 +5,14 @@ import fs from 'fs'
 
 const addFood=async(req,res)=>{
 
-    console.log("Request body:", req.body);
+  console.log(req.file);
+  if (!req.file) {
+    return res.status(400).json({ message: "No file uploaded" });
+  }
+  const { name, description, category, price } = req.body;
+  const imagePath = req.file ? `/uploads/${req.file.filename}` : null;
+const newFood = new foodModel({ name, description, image: imagePath, category, price });
 
-    const newFood= new foodModel({
-        name:req.body.name,
-        description:req.body.description,
-        image: req.file ? req.file.filename : null, 
-        price:req.body.price,
-        category:req.body.category
- 
-         })
-      
     try {
        
       await  newFood.save()
