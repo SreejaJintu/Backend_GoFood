@@ -15,6 +15,8 @@ const connectDB = async () => {
     const fetchedFoodData = await mongoose.connection.db.collection("foods");
     const foodData = await fetchedFoodData.find({}).toArray(); 
     global.food_items = foodData; 
+    console.log("Global food items loaded:", global.food_items); 
+
 
     // Fetch orders data
     const fetchedOrdersData = await mongoose.connection.db.collection("orders");
