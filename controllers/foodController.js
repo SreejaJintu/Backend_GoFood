@@ -39,7 +39,9 @@ const addFood = async (req, res) => {
   const { name, description, category, price } = req.body;
   // Cloudinary returns the image URL in req.file.path
   const imageUrl = req.file ? req.file.path : null;
-
+  if (!imageUrl) {
+    return res.status(400).json({ message: "Image upload failed" });
+}
   const newFood = new foodModel({
     name,
     description,
