@@ -3,32 +3,63 @@ import {foodModel} from "../models/Food.js";
 import fs from 'fs'
 
 
-const addFood=async(req,res)=>{
+// const addFood=async(req,res)=>{
 
-  console.log(req.file);
+//   console.log(req.file);
+//   if (!req.file) {
+//     return res.status(400).json({ message: "No file uploaded" });
+//   }
+//   const { name, description, category, price } = req.body;
+//   const imagePath = req.file ? `/uploads/${req.file.filename}` : null;
+// const newFood = new foodModel({ name, description, image: imagePath, category, price });
+
+//     try {
+       
+//       await  newFood.save()
+//       res.json({
+//         success: true,
+//         message: "Food added successfully",
+//         foodItem: newFood, 
+//       });
+//     } catch (error) {
+//         console.log(error)
+//         res.json({success:false,message:"error in addind food"})
+
+        
+//     }
+
+// }
+
+const addFood = async (req, res) => {
+  console.log("Uploaded file:", req.file);
   if (!req.file) {
     return res.status(400).json({ message: "No file uploaded" });
   }
+
   const { name, description, category, price } = req.body;
-  const imagePath = req.file ? `/uploads/${req.file.filename}` : null;
-const newFood = new foodModel({ name, description, image: imagePath, category, price });
+  // Cloudinary returns the image URL in req.file.path
+  const imageUrl = req.file ? req.file.path : null;
 
-    try {
-       
-      await  newFood.save()
-      res.json({
-        success: true,
-        message: "Food added successfully",
-        foodItem: newFood, 
-      });
-    } catch (error) {
-        console.log(error)
-        res.json({success:false,message:"error in addind food"})
+  const newFood = new foodModel({
+    name,
+    description,
+    image: imageUrl,
+    category,
+    price,
+  });
 
-        
-    }
-
-}
+  try {
+    await newFood.save();
+    res.json({
+      success: true,
+      message: "Food added successfully",
+      foodItem: newFood,
+    });
+  } catch (error) {
+    console.error(error);
+    res.json({ success: false, message: "Error adding food" });
+  }
+};
 
 const listFood=async(req,res)=>{
 try {
