@@ -3,32 +3,6 @@ import {foodModel} from "../models/Food.js";
 import fs from 'fs'
 
 
-// const addFood=async(req,res)=>{
-
-//   console.log(req.file);
-//   if (!req.file) {
-//     return res.status(400).json({ message: "No file uploaded" });
-//   }
-//   const { name, description, category, price } = req.body;
-//   const imagePath = req.file ? `/uploads/${req.file.filename}` : null;
-// const newFood = new foodModel({ name, description, image: imagePath, category, price });
-
-//     try {
-       
-//       await  newFood.save()
-//       res.json({
-//         success: true,
-//         message: "Food added successfully",
-//         foodItem: newFood, 
-//       });
-//     } catch (error) {
-//         console.log(error)
-//         res.json({success:false,message:"error in addind food"})
-
-        
-//     }
-
-// }
 
 const addFood = async (req, res) => {
   console.log("Uploaded file:", req.file);
@@ -93,27 +67,27 @@ const removeFood = async (req, res) => {
   }
 };
 
-
-
-
-export {addFood,listFood,removeFood}
 const displayData = async (req, res) => {
-    try {
-      console.log(global.food_items)
-      if (!global.food_items || global.food_items.length === 0) {
-        console.log("Food items not loaded yet");
-        return res.status(503).send("Food data is not yet loaded. Please try again later.");
-      }
-      console.log("Sending food items to client:", global.food_items);
-      res.json(global.food_items); 
-    } catch (error) {
-      console.error("Error in displayData controller:", error);
-      res.status(500).send("Server error");
+  try {
+    const foodItems = await foodModel.find({});
+    if (!foodItems || foodItems.length === 0) {
+      console.log("No food items found");
+      return res.status(404).json({ message: "No food items available" });
     }
-  };
-  
-  export { displayData };
-  
-  
+    console.log("Sending food items to client:", foodItems);
+    res.json(foodItems);
+  } catch (error) {
+    console.error("Error in displayData controller:", error);
+    res.status(500).send("Server error");
+  }
+};
+
+
+export {addFood,listFood,removeFood,displayData}
+
+
+
+
+ 
 
 

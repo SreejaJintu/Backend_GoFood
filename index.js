@@ -22,9 +22,7 @@ const app = express();
 const server = createServer(app);
 const wss = new WebSocketServer({ server });
 
-// Configure Multer for file uploads
 
-// Serve static files for uploads and React frontend
 app.use(express.static(path.join(__dirname, "../frontend/build")));
 
 // Middleware setup
@@ -38,7 +36,7 @@ app.use(
     ],
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE"],
-    allowedHeaders: ["Content-Type", "Authorization"],
+    allowedHeaders: ["Content-Type", "Authorization","Cache-Control"],
   })
 );
 app.use(express.json());
